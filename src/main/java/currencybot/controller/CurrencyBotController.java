@@ -1,4 +1,4 @@
-package controller;
+package currencybot.controller;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.ResourceBundle;
 
 
-public class CurrencyBot extends TelegramLongPollingBot {
+public class CurrencyBotController extends TelegramLongPollingBot {
     private static final String USERNAME = "username";
     private static final String TOKEN = "token";
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("telegramBot");
