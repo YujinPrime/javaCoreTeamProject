@@ -6,7 +6,9 @@ import currencybot.dto.settings.SettingsDto;
 import currencybot.enums.BankName;
 import currencybot.enums.Currency;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +44,17 @@ public class KeyboardService {
 
     private static final String CHECK_MARK_EMOJI = ":white_check_mark:";
     private static final String EMPTY_STRING = "";
+    private static final String OPTION_NINE = "9:00";
+    private static final String OPTION_TEN = "10:00";
+    private static final String OPTION_ELEVEN = "11:00";
+    private static final String OPTION_TWELVE = "12:00";
+    private static final String OPTION_THIRTEEN = "13:00";
+    private static final String OPTION_FOURTEEN = "14:00";
+    private static final String OPTION_FIFTEEN = "15:00";
+    private static final String OPTION_SIXTEEN = "16:00";
+    private static final String OPTION_SEVENTEEN = "17:00";
+    private static final String OPTION_EIGHTEEN = "18:00";
+    private static final String OPTION_OFF = "Вимкнути сповіщення";
 
     private static final String BACK_EMOJI_BUTTON = ":arrow_left:";
     private static final String BACK_CALLBACK = "set_back";
@@ -51,6 +64,8 @@ public class KeyboardService {
     private static final String PRIVAT_CALLBACK = "set_bank_privatBank";
     private static final String MONOBANK_OPTION = "monobank ";
     private static final String MONOBANK_CALLBACK = "set_bank_monobank";
+    private static final String NOTIFICATION_OPTION_OFF = "OFF";
+    private static final String MINUTES_OPTION = ":00";
 
     public InlineKeyboardMarkup getMainKeyboard() {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
@@ -143,6 +158,46 @@ public class KeyboardService {
                 .findFirst()
                 .orElse(BankName.PRIVATBANK);
     }
+
+    public ReplyKeyboardMarkup getNotificationKeyboard() {
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        row.add(OPTION_NINE);
+        row.add(OPTION_TEN);
+        row.add(OPTION_ELEVEN);
+        keyboard.add(row);
+
+        row = new KeyboardRow();
+        row.add(OPTION_TWELVE);
+        row.add(OPTION_THIRTEEN);
+        row.add(OPTION_FOURTEEN);
+        keyboard.add(row);
+
+        row = new KeyboardRow();
+        row.add(OPTION_FIFTEEN);
+        row.add(OPTION_SIXTEEN);
+        row.add(OPTION_SEVENTEEN);
+        keyboard.add(row);
+
+        row = new KeyboardRow();
+        row.add(OPTION_EIGHTEEN);
+        row.add(OPTION_OFF);
+        keyboard.add(row);
+
+        keyboardMarkup.setKeyboard(keyboard);
+        keyboardMarkup.setOneTimeKeyboard(true);
+        return keyboardMarkup;
+    }
+
+    private String getUserNotificationSetting(long chatId) {
+        return CurrencyBotController.settingsDtoList.stream()
+                .filter(userSettings -> userSettings.getChatId() == chatId)
+                .map(SettingsDto::getNotificationTime)
+                .map(time -> time.equals(NOTIFICATION_OPTION_OFF) ? time + EMPTY_STRING : time + MINUTES_OPTION)
+                .collect(Collectors.joining());
+    }
+
     public InlineKeyboardMarkup getHomeKeyboard() {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
