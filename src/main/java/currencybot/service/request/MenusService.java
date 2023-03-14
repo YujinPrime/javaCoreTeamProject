@@ -20,7 +20,7 @@ public class MenusService {
     private static final String SETTINGS_MESSAGE = "Налаштування";
     private static final String BANKNAME_MESSAGE = "Банк";
     private static final String MAIN_MENU_MESSAGE = "Оберіть одну з наданих опцій";
-
+    private static final String NOTIFICATION_TIME_MESSAGE = "Виберіть час оповіщень";
     private static final String CURRENCY_MESSAGE = "Валюти";
 
     public SendMessage getStartMenu(long chatId) {
@@ -80,5 +80,14 @@ public class MenusService {
                 .replyMarkup(keyboardService.getBankNameKeyboard(chatId))
                 .build();
     }
+
+    public SendMessage getNotificationMenu(long chatId) {
+        return SendMessage.builder()
+                .chatId(chatId)
+                .text(NOTIFICATION_TIME_MESSAGE)
+                .replyMarkup(keyboardService.getNotificationKeyboard())
+                .build();
+    }
+
 
 }
