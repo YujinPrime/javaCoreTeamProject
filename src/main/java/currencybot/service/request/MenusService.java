@@ -1,8 +1,14 @@
 package currencybot.service.request;
 
+import com.vdurmont.emoji.EmojiParser;
 import currencybot.dto.settings.SettingsDto;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.toIntExact;
 
@@ -12,6 +18,8 @@ public class MenusService {
     private static final KeyboardService keyboardService = new KeyboardService();
     private static final String WELCOME_MESSAGE = "Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют";
     private static final String SETTINGS_MESSAGE = "Налаштування";
+    private static final String BANKNAME_MESSAGE = "Банк";
+    private static final String MAIN_MENU_MESSAGE = "Оберіть одну з наданих опцій";
 
     private static final String CURRENCY_MESSAGE = "Валюти";
 
@@ -64,4 +72,13 @@ public class MenusService {
                 .replyMarkup(keyboardService.getCurrencyKeyboard(chatId))
                 .build();
     }
+    public EditMessageText getBankMenu(long chatId, long messageId) {
+        return EditMessageText.builder()
+                .chatId(chatId)
+                .messageId(toIntExact(messageId))
+                .text(BANKNAME_MESSAGE)
+                .replyMarkup(keyboardService.getBankNameKeyboard(chatId))
+                .build();
+    }
+
 }

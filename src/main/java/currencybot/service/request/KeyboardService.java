@@ -3,6 +3,7 @@ package currencybot.service.request;
 import com.vdurmont.emoji.EmojiParser;
 import currencybot.controller.CurrencyBotController;
 import currencybot.dto.settings.SettingsDto;
+import currencybot.enums.BankName;
 import currencybot.enums.Currency;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -44,6 +45,12 @@ public class KeyboardService {
 
     private static final String BACK_EMOJI_BUTTON = ":arrow_left:";
     private static final String BACK_CALLBACK = "set_back";
+    private static final String NBU_OPTION = "НБУ ";
+    private static final String NBU_CALLBACK = "set_bank_nbu";
+    private static final String PRIVAT_OPTION = "ПриватБанк ";
+    private static final String PRIVAT_CALLBACK = "set_bank_privatBank";
+    private static final String MONOBANK_OPTION = "monobank ";
+    private static final String MONOBANK_CALLBACK = "set_bank_monobank";
 
     public InlineKeyboardMarkup getMainKeyboard() {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
@@ -111,4 +118,37 @@ public class KeyboardService {
         backButton.addAll(homeButton);
         return backButton;
     }
+    public InlineKeyboardMarkup getBankNameKeyboard(long chatId) {
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        rowsInline.add(createButton(NBU_OPTION + checkMarkForBankName(chatId, BankName.NBU), NBU_CALLBACK));
+        rowsInline.add(createButton(PRIVAT_OPTION + checkMarkForBankName(chatId, BankName.PRIVATBANK), PRIVAT_CALLBACK));
+        rowsInline.add(createButton(MONOBANK_OPTION + checkMarkForBankName(chatId, BankName.MONOBANK), MONOBANK_CALLBACK));
+        rowsInline.add(createBackHomeButtons());
+        markupInline.setKeyboard(rowsInline);
+        return markupInline;
+    }
+
+    private String checkMarkForBankName(long chatId, BankName bank) {
+        BankName userBankSetting = getUserBankSetting(chatId);
+        return userBankSetting == bank
+                ? EmojiParser.parseToUnicode(CHECK_MARK_EMOJI)
+                : EMPTY_STRING;
+    }
+
+    private BankName getUserBankSetting(long chatId) {
+        return CurrencyBotController.settingsDtoList.stream()
+                .filter(userSettings -> userSettings.getChatId() == chatId)
+                .map(SettingsDto::getBank)
+                .findFirst()
+                .orElse(BankName.PRIVATBANK);
+    }
+    public InlineKeyboardMarkup getHomeKeyboard() {
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        rowsInline.add(createButton(EmojiParser.parseToUnicode(HOME_EMOJI_BUTTON), HOME_CALLBACK));
+        markupInline.setKeyboard(rowsInline);
+        return markupInline;
+    }
+
 }
