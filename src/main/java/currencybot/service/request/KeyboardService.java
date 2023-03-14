@@ -34,6 +34,17 @@ public class KeyboardService {
     private static final String LEFT_SQUARE_BRACKET = "[";
     private static final String RIGHT_SQUARE_BRACKET = "]";
 
+    private static final String USD_OPTION = "USD ";
+    private static final String USD_CALLBACK = "set_cur_usd";
+    private static final String EUR_OPTION = "EUR ";
+    private static final String EUR_CALLBACK = "set_cur_eur";
+
+    private static final String CHECK_MARK_EMOJI = ":white_check_mark:";
+    private static final String EMPTY_STRING = "";
+
+    private static final String BACK_EMOJI_BUTTON = ":arrow_left:";
+    private static final String BACK_CALLBACK = "set_back";
+
     public InlineKeyboardMarkup getMainKeyboard() {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
@@ -90,5 +101,14 @@ public class KeyboardService {
                 .build();
         rowInline.add(button);
         return rowInline;
+    }
+
+    private List<InlineKeyboardButton> createBackHomeButtons() {
+        String markedOptionArrow = EmojiParser.parseToUnicode(BACK_EMOJI_BUTTON);
+        String markedOptionHouse = EmojiParser.parseToUnicode(HOME_EMOJI_BUTTON);
+        List<InlineKeyboardButton> backButton = createButton(markedOptionArrow, BACK_CALLBACK);
+        List<InlineKeyboardButton> homeButton = createButton(markedOptionHouse, HOME_CALLBACK);
+        backButton.addAll(homeButton);
+        return backButton;
     }
 }
