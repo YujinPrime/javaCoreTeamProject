@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 
 import static java.lang.Math.toIntExact;
 
-public class MenusService {
+public class MenuCreationService {
 
     private static final RateResponseService rateResponseService = new RateResponseService();
     private static final KeyboardService keyboardService = new KeyboardService();
