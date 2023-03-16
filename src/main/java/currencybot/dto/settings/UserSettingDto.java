@@ -6,14 +6,14 @@ import currencybot.enums.Currency;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsDto {
+public class UserSettingDto {
     private long chatId;
     private int decimalCount;
     private List<Currency> currency;
     private BankName bank;
     private String notificationTime;
 
-    public SettingsDto(long chatId) {
+    public UserSettingDto(long chatId) {
         this.chatId = chatId;
         this.decimalCount = 2;
         currency = new ArrayList<>(){

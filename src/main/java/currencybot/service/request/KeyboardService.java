@@ -2,7 +2,7 @@ package currencybot.service.request;
 
 import com.vdurmont.emoji.EmojiParser;
 import currencybot.controller.CurrencyBotController;
-import currencybot.dto.settings.SettingsDto;
+import currencybot.dto.settings.UserSettingDto;
 import currencybot.enums.BankName;
 import currencybot.enums.Currency;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -109,9 +109,9 @@ public class KeyboardService {
     }
 
     private List<Currency> getUserCurrencySetting(long chatId) {
-        return CurrencyBotController.settingsDtoList.stream()
+        return CurrencyBotController.userSettingDtoList.stream()
                 .filter(userSettings -> userSettings.getChatId() == chatId)
-                .map(SettingsDto::getCurrency)
+                .map(UserSettingDto::getCurrency)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
@@ -152,9 +152,9 @@ public class KeyboardService {
     }
 
     private BankName getUserBankSetting(long chatId) {
-        return CurrencyBotController.settingsDtoList.stream()
+        return CurrencyBotController.userSettingDtoList.stream()
                 .filter(userSettings -> userSettings.getChatId() == chatId)
-                .map(SettingsDto::getBank)
+                .map(UserSettingDto::getBank)
                 .findFirst()
                 .orElse(BankName.PRIVATBANK);
     }
@@ -191,9 +191,9 @@ public class KeyboardService {
     }
 
     private String getUserNotificationSetting(long chatId) {
-        return CurrencyBotController.settingsDtoList.stream()
+        return CurrencyBotController.userSettingDtoList.stream()
                 .filter(userSettings -> userSettings.getChatId() == chatId)
-                .map(SettingsDto::getNotificationTime)
+                .map(UserSettingDto::getNotificationTime)
                 .map(time -> time.equals(NOTIFICATION_OPTION_OFF) ? time + EMPTY_STRING : time + MINUTES_OPTION)
                 .collect(Collectors.joining());
     }
