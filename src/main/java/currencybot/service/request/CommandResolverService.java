@@ -2,10 +2,15 @@ package currencybot.service.request;
 
 import currencybot.dto.settings.UserSettingDto;
 import currencybot.enums.Currency;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 
 public class CommandResolverService {
     private static final MenuCreationService menuCreationService = new MenuCreationService();
+    private static final String GET_INFO_CALLBACK = "getInfo";
+    private static final String GET_INFO_AGAIN_CALLBACK = "getInfoAgain";
+    private static final String SETTINGS_CALLBACK = "settings";
+    private static final String NOTIFICATION_TIME_CALLBACK = "notificationTime";
     private static final String DECIMAL_CALLBACK_MARKER = "dec_";
     private static final String DECIMAL_TWO_CALLBACK = "set_dec_decimalCountIsTwo";
     private static final String DECIMAL_THREE_CALLBACK = "set_dec_decimalCountIsThree";
@@ -21,6 +26,43 @@ public class CommandResolverService {
     private static final String BANK_NAME_CALLBACK = "set_bankName";
     private static final String CURRENCY_CALLBACK = "set_currency";
     private static final String BACK_CALLBACK = "set_back";
+    private static final String START_CALLBACK = "/start";
+
+    public SendMessage resolveMainMenuAndNotificationCommands(String callBack, long chatId) {
+        SendMessage newMessage;
+        UserSettingDto userSettingsDto = getUserSettingsDto(chatId);
+        if (notificationOptions.contains(callBack)) {
+            userSettingsDto.setNotificationTime(callBack);
+            newMessage = menuCreationService.getSettingsMenu(chatId);
+            CurrencyRateBotController.settingsToJson();
+        } else {
+            switch (callBack) {
+                case START_CALLBACK: {
+                    newMessage = menuCreationService.getStartMenu(chatId);
+                } break;
+                case GET_INFO_CALLBACK: {
+                    if (isListContainsUserBank(userSettingsDto)) {
+                        newMessage = menuCreationService.getRateMenu(chatId, userSettingsDto, false);
+                    } else {
+                        newMessage = menuCreationService.getRateMenu(chatId, userSettingsDto, true);
+                    }
+                } break;
+                case GET_INFO_AGAIN_CALLBACK: {
+                    newMessage = menuCreationService.getRateMenu(chatId, userSettingsDto, true);
+                } break;
+                case SETTINGS_CALLBACK: {
+                    newMessage = menuCreationService.getSettingsMenu(chatId);
+                } break;
+                case NOTIFICATION_TIME_CALLBACK: {
+                    newMessage = menuCreationService.getNotificationMenu(chatId);
+                } break;
+                default: {
+                    newMessage = menuCreationService.getMainMenu(chatId);
+                }
+            }
+        }
+        return newMessage;
+    }
 
     public EditMessageText resolveSettingsMenuCommands(String callBack, long chatId, long messageId) {
         EditMessageText newMessage = null;
