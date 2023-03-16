@@ -72,11 +72,21 @@ public class KeyboardService {
     private static final String DECIMAL_THREE_CALLBACK = "set_dec_decimalCountIsThree";
     private static final String DECIMAL_FOUR_OPTION = "4 ";
     private static final String DECIMAL_FOUR_CALLBACK = "set_dec_decimalCountIsFour";
+    private static final String GET_RATES_AGAIN = "Зробити повторний запит";
+    private static final String GET_INFO_AGAIN_CALLBACK = "getInfoAgain";
 
     public InlineKeyboardMarkup getMainKeyboard() {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         rowsInline.add(createButton(GET_INFO_BUTTON, GET_INFO_CALLBACK));
+        rowsInline.add(createButton(SETTINGS_BUTTON, SETTINGS_CALLBACK));
+        markupInline.setKeyboard(rowsInline);
+        return markupInline;
+    }
+    public InlineKeyboardMarkup getErrorKeyboard() {
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        rowsInline.add(createButton(GET_RATES_AGAIN, GET_INFO_AGAIN_CALLBACK));
         rowsInline.add(createButton(SETTINGS_BUTTON, SETTINGS_CALLBACK));
         markupInline.setKeyboard(rowsInline);
         return markupInline;
@@ -195,6 +205,7 @@ public class KeyboardService {
         keyboardMarkup.setOneTimeKeyboard(true);
         return keyboardMarkup;
     }
+
     public InlineKeyboardMarkup getDecimalCountKeyboard(long chatId) {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
