@@ -16,6 +16,8 @@ public class MenusService {
     private static final String MAIN_MENU_MESSAGE = "Оберіть одну з наданих опцій";
     private static final String NOTIFICATION_TIME_MESSAGE = "Виберіть час оповіщень";
     private static final String CURRENCY_MESSAGE = "Валюти";
+    private static final String DECIMAL_COUNT_MESSAGE = "Кількість знаків після коми";
+
 
     public SendMessage getStartMenu(long chatId) {
         return SendMessage.builder()
@@ -80,6 +82,14 @@ public class MenusService {
                 .chatId(chatId)
                 .text(NOTIFICATION_TIME_MESSAGE)
                 .replyMarkup(keyboardService.getNotificationKeyboard())
+                .build();
+    }
+    public EditMessageText getDecimalCountMenu(long chatId, long messageId) {
+        return EditMessageText.builder()
+                .chatId(chatId)
+                .messageId(toIntExact(messageId))
+                .text(DECIMAL_COUNT_MESSAGE)
+                .replyMarkup(keyboardCreationService.getDecimalCountKeyboard(chatId))
                 .build();
     }
 

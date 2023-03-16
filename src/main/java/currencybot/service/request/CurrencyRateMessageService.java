@@ -24,6 +24,17 @@ public class CurrencyRateMessageService {
             new NbuCurrencyRateRequestService()
     );
 
+    public String getRateResponse(UserSettingDto userSettingsDto, boolean isNewRequestRequired) {
+        List<CurrencyRateDto> currencyRatesBySettings = getCurrencyRatesBySettings(userSettingsDto,isNewRequestRequired);
+        StringBuilder response = new StringBuilder();
+        if (!currencyRatesBySettings.isEmpty()) {
+            response.append(MessageFormat.format(RESPONSE_BANK, userSettingsDto.getBank().name));
+            currencyRatesBySettings.forEach(currencyRateDto -> formatRateResponse(userSettingsDto, response, currencyRateDto));
+        } else {
+            response.append(ERROR_MESSAGE);
+        }
+        return response.toString();
+    }
 
 
     private List<CurrencyRateDto> getCurrencyRatesBySettings(UserSettingDto userSettingsDto, boolean isNewRequestRequired) {
@@ -47,6 +58,11 @@ public class CurrencyRateMessageService {
                 .map(CurrencyRateRequestService::getCurrencyRates)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+    }
+    private static void formatRateResponse(UserSettingDto userSettingsDto, StringBuilder response, CurrencyRateDto currencyRateDto) {
+        String formatedString = MessageFormat.format(
+                RESPONSE_RATE, currencyRateDto.getCurrency(), userSettingsDto.getDecimalCount());
+        response.append(String.format(formatedString, currencyRateDto.getBuyRate(), currencyRateDto.getSellRate()));
     }
 
 
