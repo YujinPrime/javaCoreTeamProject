@@ -66,6 +66,12 @@ public class KeyboardService {
     private static final String MONOBANK_CALLBACK = "set_bank_monobank";
     private static final String NOTIFICATION_OPTION_OFF = "OFF";
     private static final String MINUTES_OPTION = ":00";
+    private static final String DECIMAL_TWO_OPTION = "2 ";
+    private static final String DECIMAL_TWO_CALLBACK = "set_dec_decimalCountIsTwo";
+    private static final String DECIMAL_THREE_OPTION = "3 ";
+    private static final String DECIMAL_THREE_CALLBACK = "set_dec_decimalCountIsThree";
+    private static final String DECIMAL_FOUR_OPTION = "4 ";
+    private static final String DECIMAL_FOUR_CALLBACK = "set_dec_decimalCountIsFour";
 
     public InlineKeyboardMarkup getMainKeyboard() {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
@@ -188,6 +194,30 @@ public class KeyboardService {
         keyboardMarkup.setKeyboard(keyboard);
         keyboardMarkup.setOneTimeKeyboard(true);
         return keyboardMarkup;
+    }
+    public InlineKeyboardMarkup getDecimalCountKeyboard(long chatId) {
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        rowsInline.add(createButton(DECIMAL_TWO_OPTION + checkMarkForDecimalCount(chatId, 2), DECIMAL_TWO_CALLBACK));
+        rowsInline.add(createButton(DECIMAL_THREE_OPTION + checkMarkForDecimalCount(chatId, 3), DECIMAL_THREE_CALLBACK));
+        rowsInline.add(createButton(DECIMAL_FOUR_OPTION + checkMarkForDecimalCount(chatId, 4), DECIMAL_FOUR_CALLBACK));
+        rowsInline.add(createBackHomeButtons());
+        markupInline.setKeyboard(rowsInline);
+        return markupInline;
+    }
+
+    private String checkMarkForDecimalCount(long chatId, int decimalOption) {
+        Integer userDecimalSetting = getUserDecimalSetting(chatId);
+        return userDecimalSetting == decimalOption
+                ? EmojiParser.parseToUnicode(CHECK_MARK_EMOJI)
+                : EMPTY_STRING;
+    }
+
+    private Integer getUserDecimalSetting(long chatId) {
+        return CurrencyBotController.settingsDtoList.stream()
+                .filter(userSettings -> userSettings.getChatId() == chatId)
+                .map(SettingsDto::getDecimalCount)
+                .reduce(0, Integer::sum);
     }
 
     private String getUserNotificationSetting(long chatId) {
