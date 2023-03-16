@@ -3,7 +3,7 @@ package currencybot.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import currencybot.dto.settings.SettingsDto;
+import currencybot.dto.settings.UserSettingDto;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 
 
 public class CurrencyBotController extends TelegramLongPollingBot {
-    public static List<SettingsDto> settingsDtoList = settingsFromJson();
+    public static List<UserSettingDto> userSettingDtoList = settingsFromJson();
     private static final String USERNAME = "username";
     private static final String TOKEN = "token";
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("telegramBot");
@@ -51,16 +51,16 @@ public class CurrencyBotController extends TelegramLongPollingBot {
     public static synchronized void settingsToJson() {
         try (Writer fileWriter = new FileWriter(JSON_FILE)) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(settingsDtoList, fileWriter);
+            gson.toJson(userSettingDtoList, fileWriter);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static List<SettingsDto> settingsFromJson() {
-        List<SettingsDto> tempList = new ArrayList<>();
+    private static List<UserSettingDto> settingsFromJson() {
+        List<UserSettingDto> tempList = new ArrayList<>();
         try (Reader fileReader = new FileReader(JSON_FILE)) {
-            Type type = TypeToken.getParameterized(List.class, SettingsDto.class).getType();
+            Type type = TypeToken.getParameterized(List.class, UserSettingDto.class).getType();
             tempList = new Gson().fromJson(fileReader, type);
         }
         catch (IOException e) {

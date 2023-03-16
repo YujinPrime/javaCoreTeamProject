@@ -1,14 +1,8 @@
 package currencybot.service.request;
 
-import com.vdurmont.emoji.EmojiParser;
-import currencybot.dto.settings.SettingsDto;
+import currencybot.dto.settings.UserSettingDto;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.Math.toIntExact;
 
@@ -39,7 +33,7 @@ public class MenusService {
                 .build();
     }
 
-    public SendMessage getRateMenu(long chatId, SettingsDto userSettingsDto) {
+    public SendMessage getRateMenu(long chatId, UserSettingDto userSettingsDto) {
         return SendMessage.builder()
                 .chatId(chatId)
                 .text(rateResponseService.getRateResponse(userSettingsDto))
@@ -47,7 +41,7 @@ public class MenusService {
                 .build();
     }
 
-    public SendMessage getAutoRateMenu(long chatId, SettingsDto userSettingsDto) {
+    public SendMessage getAutoRateMenu(long chatId, UserSettingDto userSettingsDto) {
         return SendMessage.builder()
                 .chatId(chatId)
                 .text(rateResponseService.getRateResponse(userSettingsDto))
