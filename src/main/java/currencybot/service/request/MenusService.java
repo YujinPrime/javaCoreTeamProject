@@ -15,6 +15,8 @@ public class MenusService {
 
     private static final String CURRENCY_MESSAGE = "Валюти";
 
+    private static final String DECIMAL_COUNT_MESSAGE = "Кількість знаків після коми";
+
     public SendMessage getStartMenu(long chatId) {
         return SendMessage.builder()
                 .chatId(chatId)
@@ -64,4 +66,14 @@ public class MenusService {
                 .replyMarkup(keyboardService.getCurrencyKeyboard(chatId))
                 .build();
     }
+
+    public EditMessageText getDecimalCountMenu(long chatId, long messageId) {
+        return EditMessageText.builder()
+                .chatId(chatId)
+                .messageId(toIntExact(messageId))
+                .text(DECIMAL_COUNT_MESSAGE)
+                .replyMarkup(keyboardCreationService.getDecimalCountKeyboard(chatId))
+                .build();
+    }
+
 }
