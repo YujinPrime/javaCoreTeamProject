@@ -1,7 +1,7 @@
 package currencybot.service.request;
 
 import com.vdurmont.emoji.EmojiParser;
-import currencybot.controller.CurrencyBotController;
+import currencybot.controller.CurrencyRateBotController;
 import currencybot.dto.settings.UserSettingDto;
 import currencybot.enums.BankName;
 import currencybot.enums.Currency;
@@ -125,7 +125,7 @@ public class KeyboardService {
     }
 
     private List<Currency> getUserCurrencySetting(long chatId) {
-        return CurrencyBotController.userSettingDtoList.stream()
+        return CurrencyRateBotController.userSettingDtoList.stream()
                 .filter(userSettings -> userSettings.getChatId() == chatId)
                 .map(UserSettingDto::getCurrency)
                 .flatMap(Collection::stream)
@@ -168,7 +168,7 @@ public class KeyboardService {
     }
 
     private BankName getUserBankSetting(long chatId) {
-        return CurrencyBotController.userSettingDtoList.stream()
+        return CurrencyRateBotController.userSettingDtoList.stream()
                 .filter(userSettings -> userSettings.getChatId() == chatId)
                 .map(UserSettingDto::getBank)
                 .findFirst()
@@ -225,14 +225,14 @@ public class KeyboardService {
     }
 
     private Integer getUserDecimalSetting(long chatId) {
-        return CurrencyBotController.settingsDtoList.stream()
+        return CurrencyRateBotController.settingsDtoList.stream()
                 .filter(userSettings -> userSettings.getChatId() == chatId)
                 .map(SettingsDto::getDecimalCount)
                 .reduce(0, Integer::sum);
     }
 
     private String getUserNotificationSetting(long chatId) {
-        return CurrencyBotController.userSettingDtoList.stream()
+        return CurrencyRateBotController.userSettingDtoList.stream()
                 .filter(userSettings -> userSettings.getChatId() == chatId)
                 .map(UserSettingDto::getNotificationTime)
                 .map(time -> time.equals(NOTIFICATION_OPTION_OFF) ? time + EMPTY_STRING : time + MINUTES_OPTION)
