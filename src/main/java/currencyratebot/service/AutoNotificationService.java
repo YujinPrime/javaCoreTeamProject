@@ -1,4 +1,4 @@
-package currencybot.service.request;
+package currencyratebot.service;
 
 import currencyratebot.controller.CurrencyRateBotController;
 import currencyratebot.dto.settings.UserSettingDto;

@@ -1,7 +1,7 @@
-package currencybot.dto.settings;
+package currencyratebot.dto.settings;
 
-import currencybot.enums.BankName;
-import currencybot.enums.Currency;
+import currencyratebot.enums.BankName;
+import currencyratebot.enums.Currency;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class UserSettingDto {
 
     public UserSettingDto(long chatId) {
         this.chatId = chatId;
-        this.decimalCount = 2;
+        decimalCount = 2;
         currency = new ArrayList<>(){
             {
                 add(Currency.USD);
@@ -62,7 +62,7 @@ public class UserSettingDto {
     }
 
     public void setNotificationTime(String notificationTime) {
-        if(notificationTime.equalsIgnoreCase("Вимкнути сповіщення")) {
+        if (notificationTime.equalsIgnoreCase("Вимкнути сповіщення")) {
             this.notificationTime = "OFF";
         } else {
             this.notificationTime = notificationTime.replace(":00", "");

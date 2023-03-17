@@ -1,11 +1,11 @@
-package currencybot.service.request;
+package currencyratebot.service;
 
 import currencyratebot.dto.currency.CurrencyRateDto;
 import currencyratebot.dto.settings.UserSettingDto;
-import currencyratebot.service.request.CurrencyRateRequestService;
 import currencyratebot.service.request.MonoCurrencyRateRequestService;
 import currencyratebot.service.request.NbuCurrencyRateRequestService;
 import currencyratebot.service.request.PrivatCurrencyRateRequestService;
+import currencyratebot.service.request.CurrencyRateRequestService;
 
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -36,7 +36,6 @@ public class CurrencyRateMessageService {
         return response.toString();
     }
 
-
     private List<CurrencyRateDto> getCurrencyRatesBySettings(UserSettingDto userSettingsDto, boolean isNewRequestRequired) {
         List<CurrencyRateDto> currencyRates;
         if (isNewRequestRequired) {
@@ -59,11 +58,10 @@ public class CurrencyRateMessageService {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
+
     private static void formatRateResponse(UserSettingDto userSettingsDto, StringBuilder response, CurrencyRateDto currencyRateDto) {
         String formatedString = MessageFormat.format(
                 RESPONSE_RATE, currencyRateDto.getCurrency(), userSettingsDto.getDecimalCount());
         response.append(String.format(formatedString, currencyRateDto.getBuyRate(), currencyRateDto.getSellRate()));
     }
-
-
 }

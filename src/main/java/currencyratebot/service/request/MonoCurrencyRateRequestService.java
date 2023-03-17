@@ -1,11 +1,11 @@
-package currencybot.service.request;
+package currencyratebot.service.request;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import currencybot.dto.currency.CurrencyRateDto;
-import currencybot.dto.currency.CurrencyRateMonoDto;
-import currencybot.enums.BankName;
-import currencybot.enums.Currency;
+import currencyratebot.dto.currency.CurrencyRateDto;
+import currencyratebot.dto.currency.MonoCurrencyRateDto;
+import currencyratebot.enums.BankName;
+import currencyratebot.enums.Currency;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static currencybot.enums.Currency.*;
+import static currencyratebot.enums.Currency.*;
 
-public class CurrencyMonoRequestService implements CurrencyRequestService {
+public class MonoCurrencyRateRequestService implements CurrencyRateRequestService {
     private static final String URL = "https://api.monobank.ua/bank/currency";
     private static final Map<Integer, Currency> codeCurr = Map.of(
             980, UAH,
@@ -28,11 +28,17 @@ public class CurrencyMonoRequestService implements CurrencyRequestService {
 
     @Override
     public List<CurrencyRateDto> getCurrencyRates() {
+        List<CurrencyRateDto> result = new ArrayList<>();
         try {
-            Connection.Response response = Jsoup.connect(URL).ignoreContentType(true).execute();
+            Connection.Response response = Jsoup.connect(URL).timeout(5000).ignoreContentType(true).execute();
+            int i = 0;
+            while (response.statusCode() == 504 && i < 2) {
+                response = Jsoup.connect(URL).timeout(5000).ignoreContentType(true).execute();
+                i++;
+            }
             if (response.statusCode() == 200) {
-                List<CurrencyRateMonoDto> currencyRateResponses = convertResponseToList(response.body());
-                return currencyRateResponses.stream()
+                List<MonoCurrencyRateDto> currencyRateResponses = convertResponseToList(response.body());
+                result = currencyRateResponses.stream()
                         .filter(item -> codeCurr.containsKey(item.getCurrencyCodeA())
                                 && codeCurr.containsKey(item.getCurrencyCodeB())
                                 && item.getCurrencyCodeB().equals(980)
@@ -45,15 +51,14 @@ public class CurrencyMonoRequestService implements CurrencyRequestService {
                         ))
                         .collect(Collectors.toList());
             }
-            return new ArrayList<>();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        return result;
     }
 
-    private List<CurrencyRateMonoDto> convertResponseToList(String response) {
-        Type type = TypeToken.getParameterized(List.class, CurrencyRateMonoDto.class).getType();
-        Gson gson = new Gson();
-        return gson.fromJson(response, type);
+    private List<MonoCurrencyRateDto> convertResponseToList(String response) {
+        Type type = TypeToken.getParameterized(List.class, MonoCurrencyRateDto.class).getType();
+        return new Gson().fromJson(response, type);
     }
 }

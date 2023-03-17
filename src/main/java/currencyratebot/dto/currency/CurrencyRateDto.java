@@ -1,10 +1,10 @@
-package currencybot.dto.currency;
+package currencyratebot.dto.currency;
 
-import currencybot.enums.BankName;
-import currencybot.enums.Currency;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import currencyratebot.enums.BankName;
+import currencyratebot.enums.Currency;
 
 import java.math.BigDecimal;
 
