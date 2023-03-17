@@ -143,10 +143,10 @@ public class CommandResolverService {
     }
 
     private void changeUserCurrencySetting(UserSettingDto userSettingsDto, Currency currency) {
-        if (userSettingsDto.getCurrency().contains(currency) && userSettingsDto.getCurrency().size() > 1) {
-            userSettingsDto.getCurrency().remove(currency);
-        } else {
+        if (!userSettingsDto.getCurrency().contains(currency)) {
             userSettingsDto.getCurrency().add(currency);
+        } else if (userSettingsDto.getCurrency().size() > 1){
+            userSettingsDto.getCurrency().remove(currency);
         }
     }
 

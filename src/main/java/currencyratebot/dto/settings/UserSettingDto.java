@@ -2,10 +2,11 @@ package currencyratebot.dto.settings;
 
 import currencyratebot.enums.BankName;
 import currencyratebot.enums.Currency;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Data
 public class UserSettingDto {
     private long chatId;
     private int decimalCount;
@@ -23,42 +24,6 @@ public class UserSettingDto {
         };
         bank = BankName.PRIVATBANK;
         notificationTime = "OFF";
-    }
-
-    public long getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(long chatId) {
-        this.chatId = chatId;
-    }
-
-    public int getDecimalCount() {
-        return decimalCount;
-    }
-
-    public void setDecimalCount(int decimalCount) {
-        this.decimalCount = decimalCount;
-    }
-
-    public List<Currency> getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(List<Currency> currency) {
-        this.currency = currency;
-    }
-
-    public BankName getBank() {
-        return bank;
-    }
-
-    public void setBank(BankName bank) {
-        this.bank = bank;
-    }
-
-    public String getNotificationTime() {
-        return notificationTime;
     }
 
     public void setNotificationTime(String notificationTime) {
