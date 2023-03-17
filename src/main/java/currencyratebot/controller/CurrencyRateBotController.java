@@ -1,29 +1,34 @@
-package currencybot.controller;
+package currencyratebot.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import currencybot.dto.settings.UserSettingDto;
+import currencyratebot.dto.settings.UserSettingDto;
+import currencyratebot.service.CommandResolverService;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-
 public class CurrencyRateBotController extends TelegramLongPollingBot {
-    public static List<UserSettingDto> userSettingDtoList = settingsFromJson();
+    private static final String JSON_FILE = "src/main/resources/settings.json";
     private static final String USERNAME = "username";
     private static final String TOKEN = "token";
     private static final String SETTINGS_CALLDATA_MARKER = "set_";
+    public static List<UserSettingDto> userSettingDtoList = settingsFromJson();
+    private static final CommandResolverService commandResolverService = new CommandResolverService();
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("telegramBot");
-
 
     @Override
     public String getBotUsername() {
@@ -72,6 +77,7 @@ public class CurrencyRateBotController extends TelegramLongPollingBot {
             }
         }
     }
+
     public static synchronized void settingsToJson() {
         try (Writer fileWriter = new FileWriter(JSON_FILE)) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -90,7 +96,7 @@ public class CurrencyRateBotController extends TelegramLongPollingBot {
         catch (IOException e) {
             e.printStackTrace();
         }
-        if(tempList == null) {
+        if (tempList == null) {
             tempList = new ArrayList<>();
         }
         return tempList;

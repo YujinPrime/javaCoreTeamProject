@@ -1,6 +1,7 @@
-package currencybot.service.request;
+package currencyratebot.service.request;
 
 import currencyratebot.dto.currency.CurrencyRateDto;
+import currencyratebot.service.CurrencyRateMessageService;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

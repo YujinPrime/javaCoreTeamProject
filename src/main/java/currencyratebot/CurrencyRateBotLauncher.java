@@ -1,8 +1,8 @@
-package currencybot;
+package currencyratebot;
 
-import currencybot.controller.CurrencyRateBotController;
-import currencybot.service.request.AutoNotificationService;
-import currencybot.service.request.DailyCurrencyRateRequestService;
+import currencyratebot.controller.CurrencyRateBotController;
+import currencyratebot.service.AutoNotificationService;
+import currencyratebot.service.request.DailyCurrencyRateRequestService;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;

@@ -1,12 +1,12 @@
-package currencybot.dto.currency;
+package currencyratebot.dto.currency;
 
-import currencybot.enums.Currency;
+import currencyratebot.enums.Currency;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class CurrencyRatePrivatDto {
+public class PrivatCurrencyRateDto {
     private Currency ccy;
     private Currency base_ccy;
     private BigDecimal buy;

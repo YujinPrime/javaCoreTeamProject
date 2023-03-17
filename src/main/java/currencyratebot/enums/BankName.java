@@ -1,4 +1,4 @@
-package currencybot.enums;
+package currencyratebot.enums;
 
 public enum BankName {
     MONOBANK("monobank"),
