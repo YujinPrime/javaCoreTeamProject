@@ -15,7 +15,7 @@ public class MenuCreationService {
     private static final String UKRAINIAN_FLAG_EMOJI = ":ua:";
     private static final String DOLLAR_EMOJI = ":dollar:";
     private static final String EURO_EMOJI = ":euro:";
-    private static final String WELCOME_MESSAGE = "%1$sЛаскаво просимо%1$s\nЦей бот допоможе відслідковувати актуальні курси валют%2$s %3$s";
+    private static final String WELCOME_MESSAGE = "%1$s Ласкаво просимо %1$s\nЦей бот допоможе відслідковувати актуальні курси валют\n%2$s %3$s";
     private static final String SETTINGS_MESSAGE = "Налаштування";
     private static final String DECIMAL_COUNT_MESSAGE = "Кількість знаків після коми";
     private static final String BANKNAME_MESSAGE = "Банк";
