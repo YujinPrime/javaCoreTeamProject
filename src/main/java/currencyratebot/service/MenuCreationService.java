@@ -1,16 +1,21 @@
 package currencyratebot.service;
 
+import com.vdurmont.emoji.EmojiParser;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import currencyratebot.dto.settings.UserSettingDto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+
 
 import static java.lang.Math.toIntExact;
 
 public class MenuCreationService {
     private static final CurrencyRateMessageService currencyRateMessageService = new CurrencyRateMessageService();
     private static final KeyboardCreationService keyboardCreationService = new KeyboardCreationService();
-    private static final String WELCOME_MESSAGE = "Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют";
+    private static final String UKRAINIAN_FLAG_EMOJI = ":ua:";
+    private static final String DOLLAR_EMOJI = ":dollar:";
+    private static final String EURO_EMOJI = ":euro:";
+    private static final String WELCOME_MESSAGE = "%1$sЛаскаво просимо%1$s\nЦей бот допоможе відслідковувати актуальні курси валют%2$s %3$s";
     private static final String SETTINGS_MESSAGE = "Налаштування";
     private static final String DECIMAL_COUNT_MESSAGE = "Кількість знаків після коми";
     private static final String BANKNAME_MESSAGE = "Банк";
@@ -23,7 +28,8 @@ public class MenuCreationService {
     public SendMessage getStartMenu(long chatId) {
         return SendMessage.builder()
                 .chatId(chatId)
-                .text(WELCOME_MESSAGE)
+                .text(String.format(WELCOME_MESSAGE, EmojiParser.parseToUnicode(UKRAINIAN_FLAG_EMOJI),
+                        EmojiParser.parseToUnicode(DOLLAR_EMOJI), EmojiParser.parseToUnicode(EURO_EMOJI)))
                 .replyMarkup(keyboardCreationService.getMainKeyboard())
                 .build();
     }
